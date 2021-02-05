@@ -9,3 +9,42 @@ const reloadIcon = document.querySelector('.fa'); //the reload button at the top
 
 let DB;
 
+document.addEventListener('DOMContentLoaded', () => {
+    // create the database
+    let TasksDB = indexedDB.open('tasks', 1);
+
+    // if there's an error
+    TasksDB.onerror = function () {
+        console.log('There was an error');
+    }
+    // if everything is fine, assign the result to the instance
+    TasksDB.onsuccess = function () {
+
+        console.log('Database Ready');
+
+        // save the result
+        DB = TasksDB.result;
+
+        // display the Task List 
+        displayTaskList();
+    }
+    // This method runs once (great for creating the schema)
+    TasksDB.onupgradeneeded = function(e) {
+        // the event will be the database
+        let db = e.target.result;
+
+        // create an object store, 
+        // keypath is going to be the Indexes
+        let objectStore = db.createObjectStore('tasks', { keyPath: 'id', autoIncrement: true });
+
+        // createindex: 1) field name 2) keypath 3) options
+        objectStore.createIndex('taskname', 'taskname', { unique: false });
+
+        console.log('Database ready and fields created!');
+    }
+
+})
+
+function displayTaskList() {
+    console.log("task list")
+}

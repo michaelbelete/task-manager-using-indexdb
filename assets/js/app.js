@@ -253,21 +253,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     function searchTask() {
-        let objectStore = DB.transaction('tasks').objectStore('tasks')
-        let taskNameIndex = objectStore.index('taskname')
+        let searchedFor = filter.value //mke it lower case
 
-        let request = taskNameIndex.getAll(filter.value)
-
-        document.querySelector('.collection').innerHTML = ''
-        request.onsuccess = function() {
-            if(request.result !== undefined) {
-                request.result.forEach(function(result){
-                    createTaskElement(result.id, result.taskname, result.date)
-                })
-            }else{
-                console.log("the task doesn't exist")
+        let AllTasks = document.querySelectorAll('.collection-item')
+    
+        AllTasks.forEach(function (task) {
+            taskTextContent = task.textContent
+            let searchResult = taskTextContent.indexOf(searchedFor.toLowerCase())
+    
+            if (searchResult == -1) {
+                task.style.display = "none"
+            } else {
+                task.style.display = "block"
             }
-        }
+        })
+    
+        // let objectStore = DB.transaction('tasks').objectStore('tasks')
+        // let taskNameIndex = objectStore.index('taskname')
+
+        // let request = taskNameIndex.getAll(filter.value)
+
+        // document.querySelector('.collection').innerHTML = ''
+        // request.onsuccess = function() {
+        //     if(request.result !== undefined) {
+        //         request.result.forEach(function(result){
+        //             createTaskElement(result.id, result.taskname, result.date)
+        //         })
+        //     }else{
+        //         console.log("the task doesn't exist")
+        //     }
+        // }
     }
     // Reload Page Function
     function reloadPage() {

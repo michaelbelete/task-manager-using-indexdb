@@ -57,6 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
             unique: false
         });
 
+        objectStore.createIndex('date', 'date', {
+            unique: false
+        })
+
         console.log('Database ready and fields created!');
     }
 
@@ -74,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let cursor = e.target.result;
 
             if (cursor) {
-                createTaskElement(cursor.value.id, cursor.value.taskname)
+                createTaskElement(cursor.value.id, cursor.value.taskname, cursor.value.date)
                 cursor.continue();
             }
         }
@@ -89,8 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
         taskInput.style.borderColor = 'green';
         //add to DB
         // create a new object with the form info
+        const nowDate = new Date();
+        const nowDateString = nowDate.getHours() + ":" + nowDate.getMinutes() + ":" + nowDate.getSeconds() + ":" + nowDate.getMilliseconds()
+
         let newTask = {
-            taskname: taskInput.value
+            taskname: taskInput.value,
+            date: nowDateString,
         }
         // Insert the object into the database 
         let transaction = DB.transaction(['tasks'], 'readwrite');
@@ -112,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
-    function createTaskElement(id, task, date = "today") {
+    function createTaskElement(id, task, date) {
         // Create an li element when the user adds a task
         const li = document.createElement("li");
         // Adding a class
@@ -173,6 +181,13 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Tasks Cleared !!!");
         }
     }
+
+    // Reload Page Function
+    function reloadPage() {
+        //using the reload fun on location object
+        location.reload();
+    }
+
     $(".dropdown-trigger").dropdown();
 
 });

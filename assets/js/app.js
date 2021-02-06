@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     TasksDB.onerror = function () {
-        console.log('Some Error has happned.');
+        console.log('Some Error has happened.');
     }
 
     TasksDB.onupgradeneeded = function (e) {

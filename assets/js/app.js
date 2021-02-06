@@ -187,14 +187,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function sortAsc() {
-        const allContents = []
+        const allContents = new Array()
 
         let objectStore = DB.transaction('tasks').objectStore('tasks')
 
+        // console.log(objectStore.getAll())
         objectStore.openCursor().onsuccess = function (e) {
             let cursor = e.target.result
 
-            if(cursor) {
+            if (cursor) {
                 let task = {
                     id: cursor.value.id,
                     taskname: cursor.value.taskname,
@@ -202,32 +203,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 allContents.push(task)
                 cursor.continue()
+            } else {
+                // allContents.forEach(function(t))
+                const sortedContent = allContents.sort((a, b) => (a.date > b.date) ? 1 : -1)
+
+                // document.querySelector('.collection').innerHTML = ''
+                sortedContent.forEach(function (task) {
+                    createTaskElement(task.id, task.taskname, task.date)
+                })
             }
         }
 
-        
-        console.log(allContents)
 
-        // const allTasks = document.querySelectorAll('.collection-item')
-        // console.log(allTasks)
-        // const allContents = []
-        // allTasks.forEach(function (task) {
-        //     let content = {
-        //         task: task.childNodes[0].textContent,
-        //         date: task.childNodes[2].textContent
-        //     }
-
-        //     allContents.push(content)
-        // })
-
-        // const sortedContent = allContents.sort((a, b) => (a.date > b.date) ? 1 : -1)
-        // console.log(sortedContent)
-
-        // document.querySelector('.collection').innerHTML = ''
-        // sortedContent.forEach(function (task) {
-        //     console.log(task)
-        //     createTaskElement(task.task, task.date)
-        // })
     }
 
     function sortDsc() {
@@ -239,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
         objectStore.openCursor().onsuccess = function (e) {
             let cursor = e.target.result
 
-            if(cursor) {
+            if (cursor) {
                 let task = {
                     id: cursor.value.id,
                     taskname: cursor.value.taskname,
@@ -247,30 +234,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 allContents.push(task)
                 cursor.continue()
+            } else {
+
+                const sortedContent = allContents.reverse((a, b) => (a.date > b.date) ? 1 : -1)
+
+                document.querySelector('.collection').innerHTML = ''
+                sortedContent.forEach(function (task) {
+                    createTaskElement(task.id, task.taskname, task.date)
+                })
             }
         }
 
-        
-        console.log(allContents)
-        // const allTasks = document.querySelectorAll('.collection-item')
 
-        // allTasks.forEach(function (task) {
-        //     console.log(task)
-        //     let content = {
-        //         task: task.childNodes[0].textContent,
-        //         date: task.childNodes[2].textContent
-        //     }
-
-        //     allContents.push(content)
-        // })
-
-        // const sortedContent = allContents.reverse((a, b) => (a.date > b.date) ? 1 : -1)
-
-
-        // document.querySelector('.collection').innerHTML = ''
-        // sortedContent.forEach(function (task) {
-        //     createTaskElement(task.task, task.date)
-        // })
     }
 
 

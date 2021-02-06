@@ -207,6 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // allContents.forEach(function(t))
                 const sortedContent = allContents.sort((a, b) => (a.date > b.date) ? 1 : -1)
 
+                document.querySelector('.collection').innerHTML = ''
                 // document.querySelector('.collection').innerHTML = ''
                 sortedContent.forEach(function (task) {
                     createTaskElement(task.id, task.taskname, task.date)

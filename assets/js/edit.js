@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
            date: nowDateString,
        }
 
+       
        let request = tasks.put(updatedTask);
 
        request.onsuccess = function() {

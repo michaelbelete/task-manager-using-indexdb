@@ -29,6 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
     taskList.addEventListener('click', removeTask);
     asc.addEventListener("click", sortAsc)
     dsc.addEventListener("click", sortDsc)
+
+    filter.addEventListener("keyup", searchTask)
     //DROP DOWN
     $('.dropdown-trigger').dropdown();
 
@@ -250,6 +252,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    function searchTask() {
+        let objectStore = DB.transaction('tasks').objectStore('tasks')
+        let taskNameIndex = objectStore.index('taskname')
+
+        let request = taskNameIndex.getAll(filter.value)
+
+        document.querySelector('.collection').innerHTML = ''
+        request.onsuccess = function() {
+            if(request.result !== undefined) {
+                request.result.forEach(function(result){
+                    createTaskElement(result.id, result.taskname, result.date)
+                })
+            }else{
+                console.log("the task doesn't exist")
+            }
+        }
+    }
     // Reload Page Function
     function reloadPage() {
         //using the reload fun on location object

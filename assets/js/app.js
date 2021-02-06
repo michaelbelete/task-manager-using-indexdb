@@ -14,6 +14,8 @@ const query = document.querySelector('.collection'); //      I've used querySele
 
 const allLi = query.getElementsByTagName('li'); //I've used by TagName method to identify every collection-item
 
+const asc = document.querySelector('#asc')
+const dsc = document.querySelector('#desc')
 
 //Declare DB var
 let DB;
@@ -25,7 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Remove task event [event delegation]
     clearBtn.addEventListener('click', clearAllTasks);
     taskList.addEventListener('click', removeTask);
-
+    asc.addEventListener("click", sortAsc)
+    dsc.addEventListener("click", sortDsc)
     //DROP DOWN
     $('.dropdown-trigger').dropdown();
 
@@ -182,6 +185,94 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Tasks Cleared !!!");
         }
     }
+
+    function sortAsc() {
+        const allContents = []
+
+        let objectStore = DB.transaction('tasks').objectStore('tasks')
+
+        objectStore.openCursor().onsuccess = function (e) {
+            let cursor = e.target.result
+
+            if(cursor) {
+                let task = {
+                    id: cursor.value.id,
+                    taskname: cursor.value.taskname,
+                    date: cursor.value.date
+                }
+                allContents.push(task)
+                cursor.continue()
+            }
+        }
+
+        
+        console.log(allContents)
+
+        // const allTasks = document.querySelectorAll('.collection-item')
+        // console.log(allTasks)
+        // const allContents = []
+        // allTasks.forEach(function (task) {
+        //     let content = {
+        //         task: task.childNodes[0].textContent,
+        //         date: task.childNodes[2].textContent
+        //     }
+
+        //     allContents.push(content)
+        // })
+
+        // const sortedContent = allContents.sort((a, b) => (a.date > b.date) ? 1 : -1)
+        // console.log(sortedContent)
+
+        // document.querySelector('.collection').innerHTML = ''
+        // sortedContent.forEach(function (task) {
+        //     console.log(task)
+        //     createTaskElement(task.task, task.date)
+        // })
+    }
+
+    function sortDsc() {
+
+        const allContents = []
+
+        let objectStore = DB.transaction('tasks').objectStore('tasks')
+
+        objectStore.openCursor().onsuccess = function (e) {
+            let cursor = e.target.result
+
+            if(cursor) {
+                let task = {
+                    id: cursor.value.id,
+                    taskname: cursor.value.taskname,
+                    date: cursor.value.date
+                }
+                allContents.push(task)
+                cursor.continue()
+            }
+        }
+
+        
+        console.log(allContents)
+        // const allTasks = document.querySelectorAll('.collection-item')
+
+        // allTasks.forEach(function (task) {
+        //     console.log(task)
+        //     let content = {
+        //         task: task.childNodes[0].textContent,
+        //         date: task.childNodes[2].textContent
+        //     }
+
+        //     allContents.push(content)
+        // })
+
+        // const sortedContent = allContents.reverse((a, b) => (a.date > b.date) ? 1 : -1)
+
+
+        // document.querySelector('.collection').innerHTML = ''
+        // sortedContent.forEach(function (task) {
+        //     createTaskElement(task.task, task.date)
+        // })
+    }
+
 
     // Reload Page Function
     function reloadPage() {

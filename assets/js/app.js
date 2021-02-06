@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     clearBtn.addEventListener('click', clearAllTasks);
     taskList.addEventListener('click', removeTask);
 
-
+    //DROP DOWN
+    $('.dropdown-trigger').dropdown();
 
     let TasksDB = indexedDB.open("tasks", 1);
 
